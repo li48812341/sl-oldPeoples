@@ -1,0 +1,149 @@
+import React, { useEffect, useState } from 'react';
+import { Modal, Typography, Image, Row, Col, Divider  } from 'antd';
+
+const { Title, Text } = Typography;
+
+interface PersonData {
+    personId?: string;
+    personName: string;
+    personGender: string;
+    personAge: number;
+    enterTime?: string;
+    exitTime?: string;
+    entryTime: string;
+    // interval: number;
+    // deviceIdIn: string;
+    // deviceIdOut: string;
+    faceUrl: string; // 假设消息包含图片 URL
+}
+interface WebSocketComponentProps {
+    updateList: () => void; // 可选的更新父组件列表的方法
+  }
+const WebSocketComponent: React.FC<WebSocketComponentProps> = ({
+    updateList
+}) => {
+    const [personData, setPersonData] = useState<PersonData | null>(null);
+    const [isModalVisible, setIsModalVisible] = useState(false); // 控制 Modal 的显示
+
+    // 创建 WebSocket 连接的函数
+    const createWebSocket = (url: string) => {
+        const socket = new WebSocket(url);
+
+        socket.onopen = () => {
+            console.log('WebSocket 连接已打开');
+            socket.send('请求获取个人信息');
+        };
+
+        socket.onmessage = (event) => {
+            const message = event.data;
+
+            try {
+                const result = JSON.parse(message);
+                console.log('解析后的数据:', result);
+                // 关闭当前的 Modal，延迟显示新的 Modal
+                setIsModalVisible(false);
+                setTimeout(() => {
+                    // 更新状态并显示最新的 Modal
+                    setPersonData({
+                        // personId: result.personId,
+                        personName: result.personName,
+                        personGender: result.personGender,
+                        personAge: result.personAge,
+                        // enterTime: result.enterTime,
+                        // exitTime: result.exitTime,
+                        entryTime: result.entryTime,
+                        // interval: result.interval,
+                        // deviceIdIn: result.deviceIdIn,
+                        // deviceIdOut: result.deviceIdOut,
+                        faceUrl: result.faceUrl || '', // 假设消息包含图片 URL
+                    });
+                    setIsModalVisible(true); // 显示新的 Modal
+                    console.log('新的数据:', updateList);
+                    updateList()
+                }, 300); // 延迟300毫秒后弹出新消息
+            } catch (e) {
+                console.error('JSON 解析错误:', e);
+            }
+        };
+
+        socket.onclose = () => {
+            console.log('WebSocket 连接已关闭');
+            // 延迟1秒后尝试重连
+            setTimeout(() => {
+                createWebSocket(url);
+            }, 1000);
+            };
+
+        socket.onerror = (error) => {
+            console.error('WebSocket 发生错误:', error);
+        };
+    };
+
+    // 使用 useEffect 来管理 WebSocket 生命周期
+    useEffect(() => {
+        const socketUrl = 'ws://36.133.62.220:30080/converter/websocket';
+        createWebSocket(socketUrl);
+
+        // return () => {
+        //     // 在组件卸载时关闭 WebSocket
+        //     if (socket) {
+        //         socket.close();
+        //     }
+        // };
+    }, []);
+
+    // 关闭 Modal
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
+
+    return (
+        <div>
+             <Modal
+                title="人员进出信息"
+                open={isModalVisible}
+                onOk={handleOk}
+                onCancel={handleOk}
+                okText="确认"
+                cancelText="关闭"
+                width={600} // 自定义宽度
+                
+            >
+                <Divider style={{  borderColor: '#f4e9e9' }}></Divider>
+                <Row gutter={16}>
+                    {/* 左侧文本信息 */}
+                    <Col span={12}>
+                        {personData ? (
+                            <div>
+                                {/* <Title level={4}>人员进出管理</Title> */}
+                                <Text><strong>姓名:</strong> {personData.personName}</Text><br />
+                                <Text><strong>性别:</strong> {personData.personGender}</Text><br />
+                                <Text><strong>年龄:</strong> {personData.personAge}</Text><br />
+                                {/* <Text><strong>进入时间:</strong> {personData.enterTime}</Text><br />
+                                <Text><strong>离开时间:</strong> {personData.exitTime}</Text><br /> */}
+                                <Text><strong>抓拍时间:</strong> {personData.entryTime}</Text><br />
+                            </div>
+                        ) : (
+                            <Text>等待接收消息...</Text>
+                        )}
+                    </Col>
+
+                    {/* 右侧图片 */}
+                    <Col span={12}>
+                        {personData && personData.faceUrl ? (
+                            <Image
+                                width={200}
+                                src={personData.faceUrl}
+                                alt="人物照片"
+                            />
+                        ) : (
+                            <Text>无图片数据</Text>
+                        )}
+                    </Col>
+                </Row>
+            </Modal>
+        </div>
+    );
+};
+
+export default WebSocketComponent;
