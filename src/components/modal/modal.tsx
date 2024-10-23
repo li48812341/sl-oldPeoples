@@ -130,7 +130,7 @@ const WebSocketComponent: React.FC<WebSocketComponentProps> = ({
     // };
 
     const handleCancel = () => {
-        return new Promise((resolve) => {
+        return new Promise<void>(async(resolve) => {
             // setIsModalVisible(false);
             const params = {
                 id: personData?.id as string,
@@ -201,3 +201,4 @@ const WebSocketComponent: React.FC<WebSocketComponentProps> = ({
 };
 
 export default WebSocketComponent;
+
