@@ -45,7 +45,7 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
     <Layout>
       <Header style={headerStyle} >
         <div style={{ flex: 1, textAlign: 'center', fontSize: '20px', fontWeight: 'bold' }}>
-          人员进出管理平台
+          人员进出管理后台
         </div>
         <Dropdown overlay={menu} placement="bottomRight" arrow>
           <Avatar style={{ cursor: 'pointer' }} icon={<UserOutlined />} />

@@ -31,10 +31,11 @@ const RootLayout = ({ children }: React.PropsWithChildren) => {
         <AntdRegistry>
           <Layout style={{ minHeight: '100vh' }}>
             {!isLoginPage && <SiderLayout></SiderLayout>}
-            {/* {children} */}
-            <PersonNotification></PersonNotification>
-            <PersonModal></PersonModal>
-            <Content style={contentStyle}>{children}</Content>
+            <Content style={contentStyle}>
+              <PersonNotification></PersonNotification>
+              <PersonModal></PersonModal>
+              {children}
+            </Content>
           </Layout>
         </AntdRegistry>
       </body>

@@ -18,7 +18,6 @@ const User = () => {
 
   const router = useRouter();
   const [data, setData] = useState<any[]>([]);
-  // const { refreshList1, setRefreshPersonList } = useStore();// 刷新所有列表
 
   const { isRefreshList, setIsRefreshList } = useStore(); // 刷新列表
 
@@ -54,9 +53,7 @@ const User = () => {
     };
     fetchData(params);
   };
-  const updateList = () => {
-    fetchData({ pageNo: 1, pageSize: 10 });
-  }
+
   // 获取表单内容并调用查询接口
   const handleSearch = () => {
     form.validateFields().then((values) => {
@@ -78,26 +75,9 @@ const User = () => {
   };
 
   useEffect(() => {
-    // const params = {
-    //   pageNo: 1,
-    //   pageSize: 2
-    // }
-    // getPersonEntryList(params).then(res => {
-    //   console.log(res)
-    //   if(res.code === 200){
-    //     setData(res.data)
-    //   }
-    //   })
-    // 初始加载时获取数据
     fetchData({ pageNo: 1, pageSize: 10 });
   }, [])
 
-  // useEffect(() => {
-  //   if (refreshList1) {
-  //     fetchData({ pageNo: 1, pageSize: 10 }); // 收到 WebSocket 消息后重新获取数据
-  //     setRefreshPersonList(false); // 重置刷新状态
-  //   }
-  // }, [refreshList1, setRefreshPersonList]);
 
   useEffect(() => {
     console.log("刷新列表",isRefreshList)

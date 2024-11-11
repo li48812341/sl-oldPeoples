@@ -95,21 +95,21 @@ const boardList = [
     {
         id: '1',
         w: 'calc(30% - 16px)',
-        h: 320,
+        // h: 320,
         type: 'bar',
         data: barData
     },
     {
         id: '3',
         w: 'calc(34% - 16px)',
-        h: 320,
+        // h: 320,
         type: 'pie',
         data: pieData
     },
     {
         id: '5',
         w: 'calc(36% - 16px)',
-        h: 320,
+        // h: 320,
         type: 'chord',
         data: choData
     },
@@ -117,7 +117,7 @@ const boardList = [
     {
         id: '6',
         w: 'calc(42% - 16px)',
-        h: 320,
+        // h: 320,
         type: 'path',
         data: {
             type: 'fetch',
@@ -136,7 +136,7 @@ const boardList = [
     {
         id: '2',
         w: 'calc(58% - 16px)',
-        h: 320,
+        // h: 320,
         type: 'barline',
         data: barLineData
     },

@@ -44,7 +44,7 @@ const App: React.FC = () => {
                     <Text><strong>姓名:</strong> {personData.personName}</Text><br />
                     <Text><strong>性别:</strong> {personData.personGender}</Text><br />
                     <Text><strong>年龄:</strong> {personData.personAge}</Text><br />
-                    <Text><strong>抓拍时间:</strong> {personData.entryTime}</Text><br />
+                    <Text><strong>抓拍时间:</strong> {personData.exitTime}</Text><br />
                 </Col>
                 <Col span={12}>
                     {personData.faceUrl ? (
