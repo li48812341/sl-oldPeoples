@@ -19,7 +19,10 @@ const apiClient: AxiosInstance = axios.create({
 // 请求拦截器
 apiClient.interceptors.request.use(
   (config) => {
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    const LONG_TOKEN=" eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJib2hDMU9MUDZUaGpWUVNJSVpoZ3ZURXBBSVR6RHFiViJ9.v0z-gbIksoJ157n4QcbmvAgfgCoZnqocEFDFV0D-F5I"
+    const token = localStorage.getItem('token') ?? LONG_TOKEN;
+    // console.log(token, 'token');
+    
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
